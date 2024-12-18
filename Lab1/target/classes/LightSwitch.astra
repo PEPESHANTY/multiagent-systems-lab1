@@ -1,0 +1,123 @@
+agent LightSwitch {
+    module EIS ei;
+    module Console C;
+    module System S;
+
+    rule +!main(list args) {
+        ei.launch("hw","dependency/tower-1.3.0.jar");
+        ei.init();
+        ei.start();
+        ei.link("gripper");
+        C.println("Press New Block until block d is created...");
+        wait(ei.block("d"));
+        C.println("You did it!");
+        // Part 1: Pick up block "d"
+        ei.pickup("d");
+        wait(ei.holding("d"));
+        // Part 2: Place block "d" on top of block "c"
+        ei.putdown("d", "c");
+        wait(ei.on("d", "c"));
+         // Part 4: Print "TOWER BUILT" after 
+        //successfully placing "d" on "c"
+        C.println("TOWER BUILT");
+        // Part 4: Sleep for 2 seconds before moving block "d"
+        S.sleep(2000);
+        // Part 4: Pick up block "d" again
+        ei.pickup("d");
+
+        // Part 4: Wait until the agent is holding block "d"
+        wait(ei.holding("d"));
+
+        // Part 4: Place block "d" on the table
+        ei.putdown("d", "table");
+
+        // Part 4: Wait until block "d" is placed on the table
+        wait(ei.on("d", "table"));
+
+        // Part 4: Print "FINISH" to indicate the task is complete
+        C.println("FINISH");
+
+        wait(ei.holding("d"));
+        ei.putdown("d", "c");
+        wait(ei.on("d", "c"));
+    }
+
+    rule +$ei.event(holding(string Y)) {
+        C.println("I picked up: " + Y);
+    }
+
+    rule +$ei.event(funct Y) {
+        C.println("Handling belief update: " + Y);
+        }
+
+}
+// agent LightSwitch {
+
+//     module Console C;
+    
+//     types light {
+//         formula switch(string, string);
+//         formula light(string, string);
+//         formula connected(string, string);
+//         formula transition(string, string);
+//     }
+
+//     initial switch("s1", "off"), light("l1", "off");
+//     initial connected("s1", "l1");
+//     initial transition("off","on"), transition("on","off");
+
+//     rule +!main(list args) {
+//         +switch("s1", "on");
+//     }
+    
+//     rule +switch(string S, string state)
+//             : connected( S, string L) { 
+//         !light(L, state);
+//     }
+
+//     rule +!light(string L, string state) : light(L, state) { }
+
+//     rule +!light(string L, string state)
+//             : transition(string from, state) & light(L, from) {
+//         -light(L, from);
+//         +light(L, state);
+//     }
+
+//     rule +light(string L, string state) {
+//         C.println("Light: " + L +" is in state: " + state);
+//     }
+// } 
+
+// //-----------------------------------------
+// // agent LightSwitch {
+// // types ls {
+// // formula switch(string);
+// // formula light(string);
+// // formula transition(string, string);
+// // }
+
+
+
+// // initial switch("off");
+// // initial light("off");
+
+// // rule +switch(string S) 
+// // { !light(S); }
+// // rule +!light(string S) : transition(string R, S) & light(R) 
+// // {
+// // -light(R);+light(S);
+// // }
+// // rule +!light(string S) { }
+// // }
+
+// //---------------------------------------------------------------------
+
+// // agent LightSwitch {
+// //   module Console console;
+
+// //   rule +!main(list args) {
+// //     console.println("Hello World!");
+// //   }
+// // }
+
+

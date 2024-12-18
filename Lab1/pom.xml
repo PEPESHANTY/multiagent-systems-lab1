@@ -1,0 +1,27 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>example</groupId>
+    <artifactId>hello</artifactId>
+    <version>1.0.0</version>
+
+    <parent>
+        <groupId>com.astralanguage</groupId>
+        <artifactId>astra-base</artifactId>
+        <version>1.4.2</version>
+        <relativePath></relativePath>
+    </parent>
+
+    <properties>
+        <astra.main>LightSwitch</astra.main>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.astralanguage</groupId>
+                <artifactId>astra-maven-plugin</artifactId>
+                <version>1.4.2</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
